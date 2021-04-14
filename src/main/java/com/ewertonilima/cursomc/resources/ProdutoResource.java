@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ewertonilima.cursomc.domain.Produto;
-import com.ewertonilima.cursomc.dto.CategoriaDTO;
 import com.ewertonilima.cursomc.dto.ProdutoDTO;
 import com.ewertonilima.cursomc.resources.utils.URL;
 import com.ewertonilima.cursomc.services.ProdutoService;
@@ -30,7 +29,7 @@ public class ProdutoResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
-	@RequestMapping( method=RequestMethod.GET)
+	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<Page<ProdutoDTO>> findPage(
 			@RequestParam(value="nome", defaultValue="")String nome,
 			@RequestParam(value="categorias", defaultValue="")String categorias,
@@ -40,7 +39,7 @@ public class ProdutoResource {
 			@RequestParam(value="direction", defaultValue="ASC")String direction) {
 		String nomeDecoded = URL.decodeParam(nome);
 		List<Integer> ids = URL.decodeIntList(categorias);
-		Page<Produto> list = service.search(nome ,ids, page, linesPerPage, orderBy, direction);
+		Page<Produto> list = service.search(nomeDecoded ,ids, page, linesPerPage, orderBy, direction);
 		Page<ProdutoDTO> listDto = list.map(obj -> new ProdutoDTO(obj));
 		return ResponseEntity.ok().body(listDto);
 	}
